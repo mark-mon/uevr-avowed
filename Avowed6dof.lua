@@ -1,7 +1,7 @@
 local api = uevr.api
 local vr = uevr.params.vr
 
-local VERSION = "1.07"
+local VERSION = "1.08"
 local uevrUtils = require('libs/uevr_utils')
 local controllers = require('libs/controllers')
 local config_filename = "avowed.txt"
@@ -1061,18 +1061,7 @@ local function reattach_weapon(current_weapon, which_hand)
             else
 				uevrUtils.set_component_relative_transform(current_weapon, {X=0,Y=0,Z=0}, {Pitch=-50.0,Yaw=0.0,Roll=0.0})
             end
-            
-            -- to eliminate weapon flicker, panda suggested detaching from parent first.
-            if UPrimitiveComponent_C == nil then
-                UPrimitiveComponent_C = find_required_object("Class /Script.Engine.PrimitiveComponent")
-            end
-            
-            -- and jbusfield suggested these, but they are only for UPrimitiveComponent not USceneComponent
-            if UPrimitiveComponent_C ~= nil and current_weapon:is_a(UPrimitiveComponent_C) then
-                current_weapon.BoundsScale = 16.0
-                current_weapon.bCastDynamicShadow = 0
-            end            
-            
+                        
             return true 
         end)
     end
@@ -1908,7 +1897,7 @@ local function write_config()
     config = config .. string.format("SHIELD_BLOCK_SIZE=%.2f\n", SHIELD_BLOCK_SIZE)
     config = config .. string.format("SHIELD_NORMAL_SIZE=%.2f\n", SHIELD_NORMAL_SIZE)
     config = config .. string.format("NORMAL_UI_SIZE=%.6f\n", NORMAL_UI_SIZE)
-    config = config .. string.format("USE_OLD_OBJ_HOOK_METHOD=%d", USE_OLD_OBJ_HOOK_METHOD)
+    config = config .. string.format("USE_OLD_OBJ_HOOK_METHOD=%d\n", USE_OLD_OBJ_HOOK_METHOD)
     config = config .. string.format("ENABLE_LUMEN=%d\n", ENABLE_LUMEN)
 
     fs.write(config_filename, config)
